@@ -3,13 +3,15 @@ import React, { useContext, useEffect, useState } from "react";
 import UserCard from "../components/user.card";
 import { fetchStudents, Student } from "../services/students";
 import Link from 'next/link'
+import { useRouter } from "next/dist/client/router";
 
 type Props = {
   students: Student[]
 };
 
 const Main: React.FC<Props> = ({students}) => {
-  const [searchText, setSearchText] = useState('');
+  const router = useRouter();
+  const [searchText, setSearchText] = useState(router.query.search as string || '');
   const [studentList, setStudentList] = useState(students);
   const size = useContext(ResponsiveContext);
 
@@ -18,13 +20,16 @@ const Main: React.FC<Props> = ({students}) => {
    }
 
    // this to filter when user stopped typing
-   useDebouncedEffect(() => filterText(searchText), [searchText], 500);
+   useDebouncedEffect(() => filterText(searchText), [searchText], 250);
 
   const isValuePresent = (s:string, val: string) => {
     return s.toLowerCase().includes(val);
   }
 
   const filterText = (val:string) => {
+    // to persist search text
+    router.query.search = val;
+    router.push(router);
     const filteredStudents = students.filter(s => isValuePresent(s.first_name, val) || isValuePresent(s.last_name, val));
     setStudentList(filteredStudents);
   }
