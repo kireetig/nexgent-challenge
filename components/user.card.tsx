@@ -7,7 +7,7 @@ type Props = {
 };
 
 const UserCard: React.FC<Props> = ({ user }) => (
-  <Card height="small" width="small">
+  <Card height="small" width="small" background="background-front">
     <CardBody align="center" pad="medium">
       <Avatar src={user.avatar} />
     </CardBody>
