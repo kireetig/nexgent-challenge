@@ -6,7 +6,7 @@ import NGTTheme from "../styles/theme";
 import { useState } from "react";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const [activeTheme, setActiveTheme] = useState<'light' | 'dark'>("light");
+  const [activeTheme, setActiveTheme] = useState<"light" | "dark">("light");
   return (
     <Grommet theme={NGTTheme} themeMode={activeTheme}>
       <Box height="100vh" width="100vw">
@@ -16,10 +16,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             src="https://www.ngt.academy/wp-content/uploads/2021/06/ngtacademy-white.png"
           />
           <Button
-            icon={activeTheme === 'light' ? <Moon /> : <Sun/>}
+            icon={activeTheme === "light" ? <Moon /> : <Sun />}
             onClick={() => {
-              // TODO
-              setActiveTheme(activeTheme === 'light' ? 'dark': 'light');
+              setActiveTheme(activeTheme === "light" ? "dark" : "light");
             }}
           />
         </Header>
