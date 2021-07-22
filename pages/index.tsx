@@ -1,5 +1,5 @@
-import { Box, TextInput } from "grommet";
-import React, { useEffect, useMemo, useState } from "react";
+import { Box, Grid, ResponsiveContext, TextInput } from "grommet";
+import React, { useContext, useEffect, useState } from "react";
 import UserCard from "../components/user.card";
 import { fetchStudents, Student } from "../services/students";
 import Link from 'next/link'
@@ -11,6 +11,7 @@ type Props = {
 const Main: React.FC<Props> = ({students}) => {
   const [searchText, setSearchText] = useState('');
   const [studentList, setStudentList] = useState(students);
+  const size = useContext(ResponsiveContext);
 
    const onChangeHandler = (event: any) => {
     setSearchText(event.target.value);
@@ -31,14 +32,16 @@ const Main: React.FC<Props> = ({students}) => {
   return (
     <Box direction="column" pad="medium" height="100%" overflow="auto">
       <TextInput placeholder="type here" value={searchText} onChange={onChangeHandler} />
-      <Box direction="row" wrap={true} justify="center">
-        {studentList.map((s) => (
-          <Link href={`/student/${s.id}`} key={s.id}>
-            <Box margin="10px" alignSelf="center">
-              <UserCard user={s} />
-            </Box>
-          </Link>
-        ))}
+      <Box pad="large">
+      <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small" justify={'center'}>
+          {studentList.map((s) => (
+            <Link href={`/student/${s.id}`} key={s.id}>
+              <Box margin="10px" alignSelf="center">
+                <UserCard user={s} />
+              </Box>
+            </Link>
+          ))}
+      </Grid>
       </Box>
     </Box>
   );
