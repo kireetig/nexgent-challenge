@@ -2,6 +2,7 @@ import { Box, TextInput } from "grommet";
 import React, { useEffect, useMemo, useState } from "react";
 import UserCard from "../components/user.card";
 import { fetchStudents, Student } from "../services/students";
+import Link from 'next/link'
 
 type Props = {
   students: Student[]
@@ -30,11 +31,13 @@ const Main: React.FC<Props> = ({students}) => {
   return (
     <Box direction="column" pad="medium" height="100%" overflow="auto">
       <TextInput placeholder="type here" value={searchText} onChange={onChangeHandler} />
-      <Box direction="row" wrap={true}>
+      <Box direction="row" wrap={true} justify="center">
         {studentList.map((s) => (
-          <Box margin="10px" key={s.id}>
-            <UserCard user={s} />
-          </Box>
+          <Link href={`/student/${s.id}`} key={s.id}>
+            <Box margin="10px" alignSelf="center">
+              <UserCard user={s} />
+            </Box>
+          </Link>
         ))}
       </Box>
     </Box>
