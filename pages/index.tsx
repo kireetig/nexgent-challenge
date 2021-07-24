@@ -11,10 +11,10 @@ type Props = {
 
 const Main: React.FC<Props> = ({ students }) => {
   const router = useRouter();
-  const [searchText, setSearchText] = useState(
+  const [searchText, setSearchText] = useState<string>(
     (router.query.search as string) || ""
   );
-  const [studentList, setStudentList] = useState([]);
+  const [studentList, setStudentList] = useState<Student[]>([]);
   const size = useContext(ResponsiveContext);
 
   const onChangeHandler = (event: any) => {
