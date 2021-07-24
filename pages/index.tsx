@@ -1,4 +1,4 @@
-import { Box, Grid, ResponsiveContext, TextInput } from "grommet";
+import { Box, Grid, ResponsiveContext, Spinner, TextInput } from "grommet";
 import React, { useContext, useEffect, useState } from "react";
 import UserCard from "../components/user.card";
 import { fetchStudents, Student } from "../services/students";
@@ -15,9 +15,11 @@ const Main: React.FC<Props> = ({ students }) => {
     (router.query.search as string) || ""
   );
   const [studentList, setStudentList] = useState<Student[]>([]);
+  const [isloading, setIsLoading] = useState<boolean>(true);
   const size = useContext(ResponsiveContext);
 
   const onChangeHandler = (event: any) => {
+    setIsLoading(true);
     setSearchText(event.target.value);
   };
 
@@ -39,6 +41,7 @@ const Main: React.FC<Props> = ({ students }) => {
       (s) =>
         isValuePresent(s.first_name, val) || isValuePresent(s.last_name, val)
     );
+    setIsLoading(false);
     setStudentList(filteredStudents);
   };
 
@@ -50,18 +53,24 @@ const Main: React.FC<Props> = ({ students }) => {
         onChange={onChangeHandler}
       />
       <Box pad="large">
+        {isloading && (
+          <Box justify="center" align={"center"}>
+            <Spinner message="Loading..." size={"xlarge"} />
+          </Box>
+        )}
         <Grid
           columns={size !== "small" ? "small" : "100%"}
           gap="small"
           justify={"center"}
         >
-          {studentList.map((s) => (
-            <Link href={`/student/${s.id}`} key={s.id}>
-              <Box margin="10px" alignSelf="center">
-                <UserCard user={s} />
-              </Box>
-            </Link>
-          ))}
+          {!isloading &&
+            studentList.map((s) => (
+              <Link href={`/student/${s.id}`} key={s.id}>
+                <Box margin="10px" alignSelf="center">
+                  <UserCard user={s} />
+                </Box>
+              </Link>
+            ))}
         </Grid>
       </Box>
     </Box>
